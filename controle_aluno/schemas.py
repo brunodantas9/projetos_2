@@ -7,6 +7,17 @@ class AlunoOut(Schema):
     matricula: str
     nome_aluno: str
     email: Optional[str]
-    nome_mae: Optional[float] # Nota: No seu model está FloatField, é isso mesmo?
+    nome_mae: Optional[str] # Nota: No seu model está FloatField, é isso mesmo?
     # Se quiser o ID do endereço:
     endereco_id: Optional[int] = None
+
+class AlunoIn(Schema):
+    matricula: str
+    nome_aluno: str
+    email: Optional[str]
+    nome_mae: Optional[str] 
+    endereco_id: Optional[int] = None
+
+class AlunoExcluido(Schema):
+    mensagem: str
+    id: int
