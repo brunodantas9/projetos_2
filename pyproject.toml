@@ -10,6 +10,8 @@ dependencies = [
     "django-ninja-extra>=0.31.4",
     "mysqlclient>=2.2.8",
     "pandas>=3.0.2",
+    "psycopg>=3.3.4",
+    "psycopg2-binary>=2.9.12",
     "pymysql>=1.1.2",
     "sqlalchemy>=2.0.49",
 ]

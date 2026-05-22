@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'controle_aluno', # adcionar sempre o app criado
     'ninja_extra',
+    'controle_biblioteca',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+DATABASES_Routers = [
+    " core.routers.BancoDadosRouter"
+]
+
 DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.mysql',
@@ -81,6 +86,14 @@ DATABASES = {
         'HOST': "localhost",
         'PORT': 3306,
         'USER': "root",
+        'PASSWORD': "Tricolor99"
+    },
+    'biblioteca':{
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': "biblioteca",
+        'HOST': "localhost",
+        'PORT': 5432,
+        'USER': "postgres",
         'PASSWORD': "Tricolor99"
     }
 }

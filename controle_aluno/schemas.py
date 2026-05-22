@@ -7,7 +7,7 @@ class AlunoOut(Schema):
     matricula: str
     nome_aluno: str
     email: Optional[str]
-    nome_mae: Optional[str] # Nota: No seu model está FloatField, é isso mesmo?
+    nome_mae: Optional[str] 
     # Se quiser o ID do endereço:
     endereco_id: Optional[int] = None
 
@@ -21,3 +21,10 @@ class AlunoIn(Schema):
 class AlunoExcluido(Schema):
     mensagem: str
     id: int
+
+class AlunoUpdateIn(Schema):
+    matricula: Optional[str] = None
+    nome_aluno: Optional[str] = None
+    email: Optional[str] = None
+    nome_mae: Optional[str] = None
+    endereco_id: Optional[int] = None
