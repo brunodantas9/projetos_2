@@ -1,232 +1,98 @@
-# BBDIS - Sistema de Controle Escolar
+# 🚀 Guia de Entrega: Instalação e Execução do Projeto
 
-Sistema completo para gerenciar alunos, disciplinas e notas escolares com backend em Django Ninja e frontend em React/TypeScript.
+Olá colega querido que vai rodar o código, fiz esse readme com muito carinho então siga todos os passos bem passo a passo igual ta explicando, vai dar certo, tem que dar certo, se der certo ganha um pão de queijo da lindinha
 
-## 📋 Estrutura do Projeto
 
-- **backend/**: API REST em Django Ninja
-- **frontend/**: Interface em React com TypeScript e Vite
+---
 
-## 🚀 Instruções para Rodar o Projeto
+## 🔍 1. Verificando o que já está instalado
+Antes de começar, vamos ver se a máquina já tem o que precisamos.
+Abra o **Terminal** (ou PowerShell) e digite os comandos abaixo um por um:
 
-### Pré-requisitos
+1.  **Verificar Python:** Digite `python --version`. 
+    *   *Deve aparecer algo como Python 3.12.x.*
+2.  **Verificar Node:** Digite `node -v`. 
+    *   *Deve aparecer algo como v20.x.x.*
+3.  **Verificar UV:** Digite `uv --version`.
+    *   *Se der erro, instale agora com:* `pip install uv`
 
-- Python 3.8+
-- Node.js 16+
-- npm ou yarn
+---
 
-### 1️⃣ Configurar e Rodar o Backend
-
+## 📥 2. Pegando o Código (GitHub)
+No terminal, vá para a pasta onde deseja salvar o projeto (ex: Área de Trabalho) e digite:
 ```bash
-cd backend
-
-# Ativar ambiente virtual (Windows)
-.venv\Scripts\activate
-
-# Ou em Linux/Mac
-source .venv/bin/activate
-
-# Instalar dependências
-pip install -r requirements.txt
-
-# Executar migrações
-python manage.py migrate
-
-# Rodar o servidor Django
-python manage.py runserver
+git clone https://github.com/brunodantas9/projetos_2.git
+cd projetos_2
 ```
 
-O backend estará disponível em: **http://localhost:8000**
+---
 
-Documentação da API: **http://localhost:8000/api/docs**
+## 🗄️ 3. Configurando os Bancos de Dados (Passo a Passo)
 
-### 2️⃣ Configurar e Rodar o Frontend
+### A. No MySQL (Para dados da Escola)
+1.  Abra o **MySQL Workbench**.
+2.  Clique na sua conexão local (geralmente chamada de `Local instance MySQL80`).
+3.  No topo, clique no ícone que parece um **Raio com um arquivo** (ou vá em `File > New Query Tab`).
+4.  No campo de texto, digite: 
+    ```sql
+    CREATE DATABASE db_escola;
+    ```
+5.  Clique no ícone do **Raio (Execute)** para criar.
 
-Em outro terminal:
+### B. No PostgreSQL (Para dados da Biblioteca)
+1.  Abra o **pgAdmin 4**.
+2.  No menu da esquerda, abra `Servers` > `PostgreSQL 16` (ou sua versão).
+3.  Clique com o botão direito em `Databases`.
+4.  Selecione `Create` > `Database...`.
+5.  No campo "Database", escreva `db_biblioteca` e clique em **Save**.
 
-```bash
-cd frontend
+---
 
-# Instalar dependências
-npm install
+## 🔑 4. Ajustando as Senhas (IMPORTANTE)
+Como cada computador pode ter uma senha de banco diferente, você **precisa** conferir a sua:
 
-# Configurar variáveis de ambiente (opcional)
-# Criar arquivo .env.local com:
-# VITE_API_URL=http://localhost:8000/api
+1.  Abra o projeto no VS Code.
+2.  Vá na pasta `backend/core/` e abra o arquivo `settings.py`.
+3.  Desça até encontrar a seção `DATABASES`.
+4.  **Mude o campo 'PASSWORD'** do MySQL (default) e do PostgreSQL (biblioteca) para a senha que VOCÊ definiu no seu computador.
+    *   *Exemplo:* Se sua senha for `admin123`, mude lá.
 
-# Rodar em desenvolvimento
-npm run dev
-```
+---
 
-O frontend estará disponível em: **http://localhost:5173**
+## ⚙️ 5. Rodando o Backend (Django)
 
-### 3️⃣ Compilar para Produção (Frontend)
+1.  No terminal, entre na pasta do backend: `cd backend`
+2.  Instale tudo com: `uv sync`
+3.  Ative o ambiente virtual:
+    *   Windows: `.venv\Scripts\activate`
+    *   Linux/Mac: `source .venv/bin/activate`
+4.  **Crie as tabelas:**
+    ```bash
+    python manage.py migrate
+    python manage.py migrate --database=biblioteca
+    ```
+5.  **Coloque os dados iniciais (Seed):**
+    ```bash
+    python seed_biblioteca.py
+    python seed_disciplinas.py
+    ```
+6.  **Ligue o servidor:**
+    ```bash
+    python manage.py runserver
+    ```
 
-```bash
-cd frontend
-npm run build
-```
+---
 
-Os arquivos compilados estarão em `frontend/dist/`
+## 💻 6. Rodando o Frontend (React)
 
-## 📚 APIs Disponíveis
+1.  Abra um **NOVO terminal** na pasta principal do projeto.
+2.  Entre na pasta do frontend: `cd frontend`
+3.  Instale tudo: `npm install`
+4.  Ligue o sistema: `npm run dev`
+5.  Abra o navegador em: `http://localhost:5173`
 
-### Alunos
+---
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/controle_aluno/consultar-alunos` | Listar todos os alunos |
-| GET | `/api/controle_aluno/consultar-alunos/{id}` | Obter aluno específico |
-| POST | `/api/controle_aluno/criar-aluno` | Criar novo aluno |
-| PUT | `/api/controle_aluno/atualizar-aluno/{id}` | Atualizar aluno |
-| DELETE | `/api/controle_aluno/deletar-aluno/{id}` | Deletar aluno |
-
-#### Exemplo de Request (POST - Criar Aluno)
-
-```bash
-curl -X POST http://localhost:8000/api/controle_aluno/criar-aluno \
-  -H "Content-Type: application/json" \
-  -d '{
-    "matricula": "2024001",
-    "nome_aluno": "João Silva",
-    "email": "joao@example.com",
-    "nome_mae": "Maria Silva",
-    "endereco_id": null
-  }'
-```
-
-#### Exemplo de Response
-
-```json
-{
-  "id": 1,
-  "matricula": "2024001",
-  "nome_aluno": "João Silva",
-  "email": "joao@example.com",
-  "nome_mae": "Maria Silva",
-  "endereco_id": null
-}
-```
-
-## 🎨 Funcionalidades Frontend
-
-### 📄 Página Inicial
-- Menu de navegação principal
-- Cards com opções para cadastro e consulta de alunos
-- Design responsivo e moderno
-
-### 👤 Cadastro de Aluno
-- Formulário completo com validação
-- Campos: Matrícula, Nome, Email, Nome da Mãe, ID do Endereço
-- Feedback de erro e sucesso
-- Redirecionamento automático após cadastro
-
-### 📋 Lista de Alunos
-- Visualização de todos os alunos em tabela
-- Ações para editar (👈 em desenvolvimento) e deletar
-- Modal de confirmação para exclusões
-- Carregamento e tratamento de erros
-
-## 🔧 Configuração
-
-### Backend - Variáveis de Ambiente (django)
-
-Configure em `backend/core/settings.py` se necessário:
-
-```python
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'seu-dominio.com']
-DEBUG = False  # Para produção
-```
-
-### Frontend - Variáveis de Ambiente
-
-Crie arquivo `frontend/.env.local`:
-
-```env
-VITE_API_URL=http://localhost:8000/api
-# Para produção:
-# VITE_API_URL=https://seu-api.com/api
-```
-
-## 📦 Dependências
-
-### Backend
-
-Veja `backend/requirements.txt`
-
-Principais:
-- Django 4.0+
-- Django Ninja
-- Django REST Framework (opcional)
-
-### Frontend
-
-Veja `frontend/package.json`
-
-Principais:
-- React 19+
-- React Router 6+
-- TypeScript 6+
-- Vite 8+
-
-## 🐛 Troubleshooting
-
-### Erro: "Cannot GET /api/..."
-
-**Solução:** Certifique-se que o backend está rodando em `http://localhost:8000`
-
-### Erro: "CORS error"
-
-**Solução:** Configure CORS no Django:
-
-```python
-# backend/core/settings.py
-INSTALLED_APPS = [
-    ...
-    'corsheaders',
-]
-
-MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    ...
-]
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-]
-```
-
-### Erro: "Module not found"
-
-**Backend:**
-```bash
-pip install -r requirements.txt
-```
-
-**Frontend:**
-```bash
-npm install
-npm install react-router-dom
-```
-
-## 📝 Próximas Funcionalidades
-
-- [ ] Tela de edição de aluno
-- [ ] Gerenciamento de endereços
-- [ ] Gerenciamento de disciplinas
-- [ ] Gerenciamento de notas
-- [ ] Sistema de autenticação
-- [ ] Paginação na lista de alunos
-- [ ] Filtros e busca avançada
-- [ ] Exportação de dados (CSV, PDF)
-- [ ] Testes unitários
-- [ ] Documentação de deploy
-
-## 👥 Autor
-
-BBDIS - Atrás dos Seus Direitos
-
-## 📄 Licença
-
-Este projeto é de uso interno.
+## 🆘 Teve erro? 
+*   **Erro de Senha:** Volte ao passo 4 e garanta que a senha no `settings.py` é a mesma do seu MySQL/Postgres.
+*   **Porta ocupada:** Se o banco não conectar, verifique se o MySQL Server está "Running" no Workbench.
